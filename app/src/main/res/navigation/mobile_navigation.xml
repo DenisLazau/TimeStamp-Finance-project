@@ -20,7 +20,11 @@
         android:id="@+id/nav_stocks"
         android:name="com.example.timestampfinance.ui.stocks.StocksFragment"
         android:label="@string/menu_stocks"
-        tools:layout="@layout/fragment_stocks" />
+        tools:layout="@layout/fragment_stocks" >
+        <action
+            android:id="@+id/action_nav_stocks_to_nav_stockdetails"
+            app:destination="@id/nav_stockdetails" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_login"
@@ -33,8 +37,8 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_slideshow"
+        android:id="@+id/nav_stockdetails"
         android:name="com.example.timestampfinance.ui.stockdetails.StockDetailsFragment"
-        android:label="@string/menu_slideshow"
+        android:label="@string/menu_stockdetails"
         tools:layout="@layout/fragment_stock_details" />
 </navigation>

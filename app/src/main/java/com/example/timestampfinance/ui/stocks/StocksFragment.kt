@@ -13,9 +13,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.timestampfinance.R
 import com.example.timestampfinance.databinding.FragmentStocksBinding
@@ -47,9 +49,36 @@ class StocksFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        stocksViewModel = ViewModelProvider(this).get(StocksViewModel::class.java)
+        setupViewModel()
+        setupSearchButton()
         fetchNewsSentiment()
         observeNewsData()
+    }
+
+    private fun setupViewModel() {
+        stocksViewModel = ViewModelProvider(this).get(StocksViewModel::class.java)
+    }
+
+    private fun setupSearchButton() {
+        binding.searchButton.setOnClickListener {
+            val symbol = binding.searchEditText.text.toString().trim()
+            if (symbol.isNotEmpty()) {
+                navigateToStockDetails(symbol)
+            } else {
+                showToast("Please enter a symbol")
+            }
+        }
+    }
+
+    private fun navigateToStockDetails(symbol: String) {
+        val bundle = Bundle().apply {
+            putString("symbol", symbol)
+        }
+        findNavController().navigate(R.id.action_nav_stocks_to_nav_stockdetails, bundle)
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

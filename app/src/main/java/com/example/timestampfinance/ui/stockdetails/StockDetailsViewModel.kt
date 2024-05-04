@@ -32,7 +32,8 @@ class StockDetailsViewModel : ViewModel() {
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 val url =
-                    URL("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$symbol&apikey=demo")
+                    //URL("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$symbol&apikey=demo")
+                    URL("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo")
                 val connection = url.openConnection() as HttpURLConnection
                 connection.requestMethod = "GET"
 
