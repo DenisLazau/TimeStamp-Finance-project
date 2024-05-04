@@ -40,5 +40,9 @@
         android:id="@+id/nav_stockdetails"
         android:name="com.example.timestampfinance.ui.stockdetails.StockDetailsFragment"
         android:label="@string/menu_stockdetails"
-        tools:layout="@layout/fragment_stock_details" />
+        tools:layout="@layout/fragment_stock_details" >
+        <action
+            android:id="@+id/action_nav_stockdetails_to_nav_stocks"
+            app:destination="@id/nav_stocks" />
+    </fragment>
 </navigation>

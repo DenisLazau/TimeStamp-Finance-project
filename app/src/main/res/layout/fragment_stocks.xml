@@ -20,21 +20,23 @@
 
     <EditText
         android:id="@+id/searchEditText"
-        android:layout_width="296dp"
-        android:layout_height="49dp"
+        android:layout_width="234dp"
+        android:layout_height="51dp"
+        android:layout_marginEnd="68dp"
         android:hint="Enter symbol..."
-        app:layout_constraintEnd_toStartOf="@+id/search_button"
-        app:layout_constraintRight_creator="@id/search_button"
-        tools:layout_editor_absoluteY="23dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="0dp" />
 
     <Button
         android:id="@+id/search_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Search"
-        tools:layout_editor_absoluteX="301dp"
-        tools:layout_editor_absoluteY="20dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="302dp"
+        tools:layout_editor_absoluteY="23dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
