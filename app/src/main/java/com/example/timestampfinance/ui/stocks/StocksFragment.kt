@@ -11,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -26,7 +25,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
 import java.net.HttpURLConnection
@@ -50,24 +48,12 @@ class StocksFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViewModel()
-        setupSearchButton()
         fetchNewsSentiment()
         observeNewsData()
     }
 
     private fun setupViewModel() {
         stocksViewModel = ViewModelProvider(this).get(StocksViewModel::class.java)
-    }
-
-    private fun setupSearchButton() {
-        binding.searchButton.setOnClickListener {
-            val symbol = binding.searchEditText.text.toString().trim()
-            if (symbol.isNotEmpty()) {
-                navigateToStockDetails(symbol)
-            } else {
-                showToast("Please enter a symbol")
-            }
-        }
     }
 
     private fun navigateToStockDetails(symbol: String) {
@@ -112,8 +98,7 @@ class StocksFragment : Fragment() {
                     // Handle error
                 }
             }
-        }
-        else{
+        } else {
             fetchNewsSentimentFromLocalFile()
         }
     }
@@ -216,11 +201,9 @@ class StocksFragment : Fragment() {
                 }
 
                 // Display title
-                titleView.text = """
-                    ${newsItem.title}
-                """.trimIndent()
+                titleView.text = newsItem.title
 
-                //Displat other information
+                // Display other information
                 textView.text = """
                     Published: ${newsItem.timePublished}
                     Summary: ${newsItem.summary}

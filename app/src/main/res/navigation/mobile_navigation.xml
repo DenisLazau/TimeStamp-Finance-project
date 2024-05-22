@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_nav_stocks_to_nav_stockdetails"
             app:destination="@id/nav_stockdetails" />
+        <action
+            android:id="@+id/action_nav_stocks_to_nav_home"
+            app:destination="@id/nav_home" />
     </fragment>
 
     <fragment
@@ -44,5 +47,8 @@
         <action
             android:id="@+id/action_nav_stockdetails_to_nav_stocks"
             app:destination="@id/nav_stocks" />
+        <action
+            android:id="@+id/action_nav_stockdetails_to_nav_home"
+            app:destination="@id/nav_home" />
     </fragment>
 </navigation>
