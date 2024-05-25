@@ -56,17 +56,6 @@ class StocksFragment : Fragment() {
         stocksViewModel = ViewModelProvider(this).get(StocksViewModel::class.java)
     }
 
-    private fun navigateToStockDetails(symbol: String) {
-        val bundle = Bundle().apply {
-            putString("symbol", symbol)
-        }
-        findNavController().navigate(R.id.action_nav_stocks_to_nav_stockdetails, bundle)
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -79,12 +68,13 @@ class StocksFragment : Fragment() {
     }
 
     private fun fetchNewsSentiment() {
-        if (!isInternetAvailable(requireContext())) {
+        if (isInternetAvailable(requireContext())) {
             val selectedTopics = GlobalSettings.selectedTopics
             GlobalScope.launch(Dispatchers.IO) {
                 try {
                     val url =
-                        URL("https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=AAPL&topics=$selectedTopics&limit=5&apikey=demo")
+                        //URL("https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=AAPL&topics=$selectedTopics&limit=5&apikey=IME0OV7SE14RXJWR")
+                    URL("https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=AAPL&apikey=demo")
                     val connection = url.openConnection() as HttpURLConnection
                     connection.requestMethod = "GET"
 

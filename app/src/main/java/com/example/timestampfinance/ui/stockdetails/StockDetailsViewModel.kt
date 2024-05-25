@@ -1,9 +1,5 @@
 package com.example.timestampfinance.ui.stockdetails
 
-
-import android.content.Context
-import android.net.ConnectivityManager
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,30 +13,21 @@ import java.net.URL
 
 class StockDetailsViewModel : ViewModel() {
 
-    private val _stockDetails = MutableLiveData<StockDetails>()
-    val stockDetails: LiveData<StockDetails>
-        get() = _stockDetails
+    private val _stockDetailsList = MutableLiveData<List<GlobalQuote>>()
+    val stockDetailsList: LiveData<List<GlobalQuote>>
+        get() = _stockDetailsList
 
-    private fun isInternetAvailable(context: Context): Boolean {
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo = connectivityManager.activeNetworkInfo
-        return networkInfo != null && networkInfo.isConnected
-    }
-
-    fun fetchStockDetails(symbol: String) {
+    fun fetchMultipleStockDetails(symbols: List<String>) {
         GlobalScope.launch(Dispatchers.IO) {
-            try {
-                val url =
-                    //URL("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$symbol&apikey=demo")
-                    URL("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo")
-                val connection = url.openConnection() as HttpURLConnection
-                connection.requestMethod = "GET"
-
-                val inputStream = connection.inputStream
-                val response = inputStream.bufferedReader().use { it.readText() }
-
+            val stockDetails = mutableListOf<GlobalQuote>()
+            for (symbol in symbols) {
                 try {
+                    val url = //URL("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$symbol&apikey=IME0OV7SE14RXJWR")
+                    URL("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo")
+                    val connection = url.openConnection() as HttpURLConnection
+                    connection.requestMethod = "GET"
+                    val inputStream = connection.inputStream
+                    val response = inputStream.bufferedReader().use { it.readText() }
                     val jsonObject = JSONObject(response)
                     val globalQuoteObject = jsonObject.getJSONObject("Global Quote")
 
@@ -56,17 +43,15 @@ class StockDetailsViewModel : ViewModel() {
                         change = globalQuoteObject.getString("09. change"),
                         changePercent = globalQuoteObject.getString("10. change percent")
                     )
+                    stockDetails.add(globalQuote)
 
-                    val stockDetails = StockDetails(globalQuote)
-                    _stockDetails.postValue(stockDetails)
                 } catch (e: JSONException) {
                     e.printStackTrace()
-                    // Handle JSON parsing error
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                // Handle other errors
             }
+            _stockDetailsList.postValue(stockDetails)
         }
     }
 }
@@ -82,8 +67,4 @@ data class GlobalQuote(
     val previousClose: String,
     val change: String,
     val changePercent: String
-)
-
-data class StockDetails(
-    val globalQuote: GlobalQuote
 )

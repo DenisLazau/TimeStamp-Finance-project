@@ -13,10 +13,10 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:contentDescription="image not successfully loaded"
-        android:paddingBottom="16dp"/>
+        android:paddingBottom="16dp" />
 
     <TextView
         android:id="@+id/textView"
