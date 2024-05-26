@@ -11,4 +11,5 @@
     <string name="menu_news">News</string>
     <string name="menu_stocks">Stocks</string>
     <string name="menu_login">Login</string>
+    <string name="app_logo">Logo</string>
 </resources>

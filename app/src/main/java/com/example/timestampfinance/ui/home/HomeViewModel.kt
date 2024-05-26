@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 class HomeViewModel : ViewModel() {
 
     private val _description = MutableLiveData<String>().apply {
-        value = "Welcome to Finance News App! Stay updated with the latest finance news."
+        value = "TimeStamp Finance keeps you updated with the latest finance news, stock trends, and market insights, ensuring you stay informed."
     }
     val description: LiveData<String> = _description
 

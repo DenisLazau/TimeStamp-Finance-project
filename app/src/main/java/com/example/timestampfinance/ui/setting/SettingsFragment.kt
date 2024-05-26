@@ -32,7 +32,7 @@ class SettingsFragment : Fragment() {
 
         // Setup topics spinner
         val topicsSpinner: Spinner = view.findViewById(R.id.topics_spinner)
-        val topics = listOf("finance", "technology", "earnings", "financial_markets")
+        val topics = listOf("technology", "earnings")
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, topics)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         topicsSpinner.adapter = adapter

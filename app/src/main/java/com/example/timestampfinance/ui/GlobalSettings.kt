@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 
 class GlobalSettings {
     companion object {
-        var selectedTopics: String = "finance"
+        var selectedTopics: String = "technology"
         val symbols: MutableList<String> = mutableListOf("AAPL")
         val email = MutableLiveData<String>()
 
