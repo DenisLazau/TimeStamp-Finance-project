@@ -2,6 +2,7 @@ package com.example.timestampfinance
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
@@ -12,6 +13,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.example.timestampfinance.databinding.ActivityMainBinding
 import com.example.timestampfinance.ui.GlobalSettings
 
@@ -33,18 +35,9 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.nav_settings)
         }
 
-
-
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-
-        val headerView = navView.getHeaderView(0)
-        val headerTitle = headerView.findViewById<TextView>(R.id.textView)
-        val headerSubtitle = headerView.findViewById<TextView>(R.id.textView)
-
-        headerTitle.text = GlobalSettings.headerTitle
-        headerSubtitle.text = GlobalSettings.headerSubtitle
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -53,6 +46,18 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        // Setup observers for GlobalSettings
+        setupHeaderObservers(navView)
+    }
+
+    private fun setupHeaderObservers(navView: NavigationView) {
+        val headerView = navView.getHeaderView(0)
+        val headerTitle = headerView.findViewById<TextView>(R.id.textView)
+
+        GlobalSettings.email.observe(this, Observer {
+            headerTitle.text = it
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

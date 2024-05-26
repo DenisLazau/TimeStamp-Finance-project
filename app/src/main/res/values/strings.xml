@@ -8,7 +8,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="menu_home">Home</string>
+    <string name="menu_news">News</string>
     <string name="menu_stocks">Stocks</string>
-    <string name="menu_stockdetails">StockDetails</string>
     <string name="menu_login">Login</string>
 </resources>

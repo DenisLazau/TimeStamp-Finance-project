@@ -7,19 +7,15 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_home"
             android:title="@string/menu_home" />
         <item
             android:id="@+id/nav_stocks"
-            android:icon="@drawable/ic_menu_stocks"
-            android:title="@string/menu_stocks" />
+            android:icon="@drawable/ic_menu_news_foreground"
+            android:title="@string/menu_news" />
         <item
             android:id="@+id/nav_stockdetails"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_stockdetails" />
-        <item
-            android:id="@+id/nav_login"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_login" />
+            android:icon="@drawable/ic_menu_stocks_foreground"
+            android:title="@string/menu_stocks" />
     </group>
 </menu>

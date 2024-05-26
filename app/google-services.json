@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1032687476839",
+    "project_id": "timestampfinance",
+    "storage_bucket": "timestampfinance.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032687476839:android:df2ce49b0f7006b73cb4c2",
+        "android_client_info": {
+          "package_name": "com.example.timestampfinance"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB63zXbTTFYfxt0gt5b59xU7oAeA3YSsK4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
