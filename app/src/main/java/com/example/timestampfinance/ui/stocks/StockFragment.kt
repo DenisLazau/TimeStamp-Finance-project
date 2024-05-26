@@ -1,11 +1,14 @@
 package com.example.timestampfinance.ui.stocks
 
+import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -35,9 +38,13 @@ class StockFragment : Fragment() {
 
         stockDetailsViewModel = ViewModelProvider(this).get(StockViewModel::class.java)
 
-        setupRecyclerView()
-        stockDetailsViewModel.fetchMultipleStockDetails(GlobalSettings.symbols)
-        observeStockDetails()
+        if (isInternetAvailable(requireContext())) {
+            setupRecyclerView()
+            stockDetailsViewModel.fetchMultipleStockDetails(GlobalSettings.symbols)
+            observeStockDetails()
+        } else {
+            Toast.makeText(requireContext(), "You are offline", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun setupRecyclerView() {
@@ -59,6 +66,12 @@ class StockFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun isInternetAvailable(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
     }
 
     class StockDetailsAdapter(private var items: List<GlobalQuote>) : RecyclerView.Adapter<StockDetailsAdapter.ViewHolder>() {
