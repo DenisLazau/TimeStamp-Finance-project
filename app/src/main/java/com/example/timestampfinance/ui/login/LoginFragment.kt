@@ -65,7 +65,8 @@ class LoginFragment : Fragment() {
                 if (task.isSuccessful) {
                     val user = firebaseAuth.currentUser
                     user?.let {
-                        GlobalSettings.email.postValue(it.email ?: "User")
+                        val emailPart = it.email?.substringBefore("@") ?: "User"
+                        GlobalSettings.email.postValue(emailPart)
                     }
                     findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                 } else {
