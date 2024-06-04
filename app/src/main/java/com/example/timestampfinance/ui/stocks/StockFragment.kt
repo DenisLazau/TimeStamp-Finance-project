@@ -100,7 +100,7 @@ class StockFragment : Fragment() {
                 Latest Trading Day: ${item.latestTradingDay}
                 Previous Close: ${item.previousClose}
                 Change: ${item.change}
-                Change Percent: ${item.changePercent}
+                Change Percent: ${item.changePercent}D
             """.trimIndent()
 
             val changePercent = item.changePercent.removeSuffix("%").toFloatOrNull() ?: 0f

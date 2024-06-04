@@ -22,7 +22,7 @@ class StockViewModel : ViewModel() {
             val stockDetails = mutableListOf<GlobalQuote>()
             for (symbol in symbols) {
                 try {
-                    val url = URL("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$symbol&apikey=IME0OV7SE14RXJWR")
+                    val url =URL("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$symbol&apikey=IME0OV7SE14RXJWR")
                     //URL("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo")
                     val connection = url.openConnection() as HttpURLConnection
                     connection.requestMethod = "GET"

@@ -25,6 +25,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
@@ -36,8 +38,7 @@ class NewsFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentStocksBinding.inflate(inflater, container, false)
@@ -67,18 +68,19 @@ class NewsFragment : Fragment() {
     }
 
     private fun fetchNewsSentiment() {
-        if (isInternetAvailable(requireContext())) {
+        if (!isInternetAvailable(requireContext())) {
             val selectedTopics = GlobalSettings.selectedTopics
             GlobalScope.launch(Dispatchers.IO) {
                 try {
-                    val url =
-                        URL("https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=AAPL&topics=$selectedTopics&limit=5&apikey=IME0OV7SE14RXJWR")
-                    //URL("https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=AAPL&apikey=demo")
+                    val url = URL("https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=AAPL&topics=$selectedTopics&limit=5&apikey=IME0OV7SE14RXJWR")
                     val connection = url.openConnection() as HttpURLConnection
                     connection.requestMethod = "GET"
 
                     val inputStream = connection.inputStream
                     val response = inputStream.bufferedReader().use { it.readText() }
+
+                    // Save the response to a local file
+                    saveResponseToFile(response)
 
                     val newsData = parseJsonResponse(response)
                     stocksViewModel.updateNewsData(newsData)
@@ -93,15 +95,28 @@ class NewsFragment : Fragment() {
         }
     }
 
+    private fun saveResponseToFile(response: String) {
+        val fileName = "news_sentiment.json"
+        val file = File(requireContext().filesDir, fileName)
+        FileOutputStream(file).use {
+            it.write(response.toByteArray())
+        }
+    }
+
     private fun fetchNewsSentimentFromLocalFile() {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                // Read data from local JSON file in assets folder
-                val inputStream = requireContext().assets.open("news_sentiment.json")
-                val response = inputStream.bufferedReader().use { it.readText() }
-
-                val newsData = parseJsonResponse(response)
-                stocksViewModel.updateNewsData(newsData)
+                // Read data from local JSON file in internal storage
+                val fileName = "news_sentiment.json"
+                val file = File(requireContext().filesDir, fileName)
+                if (file.exists()) {
+                    val response = file.readText()
+                    val newsData = parseJsonResponse(response)
+                    stocksViewModel.updateNewsData(newsData)
+                } else {
+                    // Handle case where file does not exist
+                    Toast.makeText(requireContext(), "No local data available", Toast.LENGTH_SHORT).show()
+                }
             } catch (e: IOException) {
                 e.printStackTrace()
                 // Handle error
@@ -144,7 +159,6 @@ class NewsFragment : Fragment() {
         binding.recyclerView.adapter = adapter
     }
 
-
     class NewsAdapter(private val newsData: List<NewsItem>) : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -161,7 +175,7 @@ class NewsFragment : Fragment() {
             return newsData.size
         }
 
-        public suspend fun fetchImage(imageUrl: String): Bitmap? {
+        private suspend fun fetchImage(imageUrl: String): Bitmap? {
             return withContext(Dispatchers.IO) {
                 try {
                     val url = URL(imageUrl)
@@ -176,7 +190,6 @@ class NewsFragment : Fragment() {
                 }
             }
         }
-
 
         inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             private var titleView: TextView = itemView.findViewById(R.id.titleView)
@@ -207,6 +220,5 @@ class NewsFragment : Fragment() {
                 }
             }
         }
-
     }
 }

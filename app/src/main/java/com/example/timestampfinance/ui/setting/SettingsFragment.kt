@@ -26,6 +26,9 @@ class SettingsFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_settings, container, false)
 
+        // Load settings
+        GlobalSettings.loadSettings(requireContext())
+
         // Enable back button in the action bar
         setHasOptionsMenu(true)
         (activity as? AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -37,9 +40,16 @@ class SettingsFragment : Fragment() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         topicsSpinner.adapter = adapter
 
+        // Set the spinner to the current selected topic
+        val currentTopicIndex = topics.indexOf(GlobalSettings.selectedTopics)
+        if (currentTopicIndex >= 0) {
+            topicsSpinner.setSelection(currentTopicIndex)
+        }
+
         topicsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 GlobalSettings.selectedTopics = topics[position]
+                GlobalSettings.saveSettings(requireContext())
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -55,6 +65,7 @@ class SettingsFragment : Fragment() {
             val stock = stockEditText.text.toString().trim()
             if (stock.isNotEmpty()) {
                 GlobalSettings.symbols.add(stock)
+                GlobalSettings.saveSettings(requireContext())
                 Toast.makeText(requireContext(), "Stock added: $stock", Toast.LENGTH_SHORT).show()
                 stockEditText.text.clear()
             } else {
@@ -63,5 +74,15 @@ class SettingsFragment : Fragment() {
         }
 
         return view
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                findNavController().navigateUp()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }
